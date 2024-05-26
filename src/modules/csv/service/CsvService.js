@@ -1,7 +1,11 @@
+const UserRepository = require("../repositories/CsvRepository")
+
 class CsvService {
 
-    static async uploadCsv(req, res){
-        console.log("upload, service")
+    private static userRepository
+
+    static async uploadCsv(data){
+        console.log("upload, service", data)
     }
 
 }
