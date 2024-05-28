@@ -4,32 +4,73 @@ const fs = require("fs")
 
 class CsvController {
 
-    static async uploadCsv(req, res) {
+	static async uploadCsv(req, res) {
 
-        var fileRows = []
+		var fileRows = []
 
-        fs.createReadStream(req.file.path)
-            .pipe(Csv.parse({ headers: true }))
-                .on('data', function (data) {
-                fileRows.push(data);
-            })
-            .on('end', function () {
-                console.log('File Rows:', fileRows);
-                fs.unlink(req.file.path, (err) => {
-                    if (err) {
-                        console.error('Error deleting temp file:', err);
-                    }
-                    res.send(fileRows);
-                });
-            })
-            .on('error', function (error) {
-                console.error('Error processing CSV file:', error);
-            });
+		fs.createReadStream(req.file.path)
+			.pipe(Csv.parse({ headers: true }))
+			.on('data', function (data) {
+				fileRows.push(data);
+			})
+			.on('end', async () => {
+				fs.unlink(req.file.path, async (err) => {
+					if (err) {
+						console.error('Error deleting temp file:', err);
+					}
+					const userSaved = await CsvService.uploadCsv(fileRows)
+					res.send(userSaved);
+				});
+			})
+			.on('error', function (error) {
+				console.error('Error processing CSV file:', error);
+			});
+		return false
+	}
 
-        await CsvService.uploadCsv(fileRows)
+	static async getOne(req, res) {
 
-        return fileRows
-    }
+		const user = await CsvService.getOne(req.params.id)
+
+		console.log(user)
+
+		if (!user){
+			res.status(404).json({
+				message: "user not found"
+			});
+		}
+
+		res.send(user);
+	}
+
+	static async getAll(req, res) {
+
+		const users = await CsvService.getAll()
+		res.send(users);
+
+		return false
+	}
+
+	static async update(req, res) {
+
+		const user = await CsvService.update(req.params.id, req.body)
+		res.send(user);
+
+		return false
+	}
+
+	static async delete(req, res) {
+
+		const user = await CsvService.delete(req.params.id)
+
+		if (user.affected){
+			res.status(200).json({
+				message: "user deleted successfully"
+			});
+		}
+
+		res.send(user);
+	}
 
 }
 

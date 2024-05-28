@@ -4,6 +4,9 @@ const port = 3000
 const routes = require("./src/routes/index")
 const ConnectDatabase = require("./src/config/database")
 const ConnectionOptions = require("./src/config/typeorm")
+const bodyParser = require("body-parser")
+
+app.use(bodyParser.json())
 
 ConnectDatabase(ConnectionOptions)
 
