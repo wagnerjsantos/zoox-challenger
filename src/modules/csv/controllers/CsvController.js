@@ -63,12 +63,6 @@ class CsvController {
 
 		const user = await CsvService.delete(req.params.id)
 
-		if (user.affected){
-			res.status(200).json({
-				message: "user deleted successfully"
-			});
-		}
-
 		res.send(user);
 	}
 
