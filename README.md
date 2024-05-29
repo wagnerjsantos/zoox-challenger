@@ -2,7 +2,7 @@ Sistema Acesso de Usuário
 
 Instalação:
 
-Obs.: Certifique-se de ter o NPM/Node, Docker.
+Obs.: Certifique-se de ter o NPM/Node, Docker instalados.
 
 1- Execute o comando: npm install.
 
