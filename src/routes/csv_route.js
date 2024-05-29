@@ -4,6 +4,7 @@ const csvConhtroller = require("../modules/csv/controllers/CsvController")
 const multer = require("multer")
 const upload = multer({dest: 'tmp/csv/'})
 
+router.get("/logs", csvConhtroller.getLogs)
 router.get("/:id", csvConhtroller.getOne)
 router.get("/", csvConhtroller.getAll)
 router.put("/:id", csvConhtroller.update)

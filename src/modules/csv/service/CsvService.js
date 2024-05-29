@@ -1,10 +1,12 @@
 const UserEntity = require("../entities/UserEntity")
+const LogEntity = require("../entities/LogEntity")
 const { getRepository } = require("typeorm");
 
 class CsvService {
 
     static async uploadCsv(data){
         const userRepository = getRepository(UserEntity);
+        const userLog        = getRepository(LogEntity);
 
         try {
 
@@ -21,6 +23,14 @@ class CsvService {
 
                 await userRepository.save(user);
             }
+
+            const log = userLog.create({
+                reference: 0,
+                description: "upload"
+            });
+
+            await userLog.save(log);
+
             return userRepository.find();
         } catch (error) {
             console.error(error);
@@ -59,9 +69,21 @@ class CsvService {
         }
     }
 
+    static async getLogs(){
+
+        const userLog = getRepository(LogEntity);
+
+        try {
+            return await userLog.find();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     static async update(id, data){
 
         const userRepository = getRepository(UserEntity);
+        const userLog        = getRepository(LogEntity);
 
         try {
 
@@ -81,6 +103,13 @@ class CsvService {
                     updated: data.updated
                 });
 
+                const log = userLog.create({
+                    reference: id,
+                    description: "update"
+                });
+
+                await userLog.save(log);
+
                 return userRepository.find({
                     where: {
                         id: id
@@ -98,8 +127,16 @@ class CsvService {
     static async delete(id){
 
         const userRepository = getRepository(UserEntity);
+        const userLog        = getRepository(LogEntity);
 
         try {
+
+            const log = userLog.create({
+                reference: id,
+                description: "delete"
+            });
+
+            await userLog.save(log);
 
             return await userRepository.delete({
                 id: id

@@ -32,8 +32,6 @@ class CsvController {
 
 		const user = await CsvService.getOne(req.params.id)
 
-		console.log(user)
-
 		if (!user){
 			res.status(404).json({
 				message: "user not found"
@@ -44,11 +42,13 @@ class CsvController {
 	}
 
 	static async getAll(req, res) {
-
 		const users = await CsvService.getAll()
 		res.send(users);
+	}
 
-		return false
+	static async getLogs(req, res) {
+		const logs = await CsvService.getLogs()
+		res.send(logs);
 	}
 
 	static async update(req, res) {

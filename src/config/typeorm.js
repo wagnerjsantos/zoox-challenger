@@ -1,5 +1,6 @@
 const TypeOrm = require("typeorm")
 const UserEntity = require("../modules/csv/entities/UserEntity")
+const LogEntity = require("../modules/csv/entities/LogEntity")
 const ConnectionOptions = {
     type: "mysql",
     host: "localhost",
@@ -9,7 +10,8 @@ const ConnectionOptions = {
     database: "zoox",
     synchronize: true,
     entities: [
-        UserEntity
+        UserEntity,
+        LogEntity
     ]
 }
 
